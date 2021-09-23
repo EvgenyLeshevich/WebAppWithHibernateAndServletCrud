@@ -14,5 +14,6 @@
         <property name="format_sql">true</property>
         <!--        <property name="hbm2ddl.auto">update</property>-->
         <mapping class="com.evgeniy.web.crud.hibernate.entity.User"/>
+        <mapping class="com.evgeniy.web.crud.hibernate.entity.Country"/>
     </session-factory>
 </hibernate-configuration>

@@ -67,7 +67,7 @@ public class UserDao implements DAO<User, Long> {
     @Override
     public List<User> searchAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from User ", User.class).list();
+            return session.createQuery("from User ", User.class).getResultList();
         }
     }
 

@@ -14,6 +14,9 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
 
     public User() {
     }
@@ -45,6 +48,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     @Override
