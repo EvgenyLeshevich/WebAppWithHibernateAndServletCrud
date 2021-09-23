@@ -1,9 +1,9 @@
-package com.evgeniy.web.crud.hibernate.dao;
+package com.evgeniy.web.crud.hibernate.services;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface DAO <T, Id extends Serializable>{
+public interface Services <T, Id extends Serializable>{
     public void add(T entity);
 
     public void update(T entity);

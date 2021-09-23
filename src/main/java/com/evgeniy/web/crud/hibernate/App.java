@@ -11,6 +11,12 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         UserService userService = new UserService();
-        userService.deleteAll();
+        userService.deleteByFirstName("Evgeniy");
+        List<User> users = userService.searchAll();
+        for (User u :
+                users) {
+            System.out.println(u.toString());
+        }
+
     }
 }

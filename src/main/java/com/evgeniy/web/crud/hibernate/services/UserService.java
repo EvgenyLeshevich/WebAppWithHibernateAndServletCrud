@@ -5,7 +5,7 @@ import com.evgeniy.web.crud.hibernate.entity.User;
 
 import java.util.List;
 
-public class UserService {
+public class UserService implements Services<User, Long>{
     private UserDao userDao = new UserDao();
 
     public UserService() {
@@ -24,16 +24,25 @@ public class UserService {
         return user;
     }
 
-    public void delete(Long id){
-        userDao.delete(id);
+    public void deleteById(Long id){
+        userDao.deleteById(id);
     }
 
-    public List<User> findAll(){
-        List<User> users = userDao.findAll();
+    public List<User> searchAll(){
+        List<User> users = userDao.searchAll();
         return users;
     }
 
     public void deleteAll(){
         userDao.deleteAll();
+    }
+
+    public List<User> searchByFirstName(String firstName,String lastName){
+        List<User> users = userDao.searchByFirstName(firstName,lastName);
+        return users;
+    }
+
+    public void deleteByFirstName(String firstName) {
+        userDao.deleteByFirstName(firstName);
     }
 }

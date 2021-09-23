@@ -36,36 +36,36 @@ public class UserDao implements DAO<User, Long> {
     public User searchById(Long id) {
         User user = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Query query = session.createQuery("from User u where u.id = :userId");
-            query.setParameter("userId", id);
-            user = (User) query.getSingleResult();
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    @Override
-    public void delete(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            User user = session.get(User.class, id);
-            if (user != null) {
-                session.beginTransaction();
-
-                session.delete(user);
-                session.getTransaction().commit();
+            user = session.get(User.class, id);
+            if(user!=null){
+                return user;
             } else {
                 System.out.println("Employee doesn't exist with provided Id..");
             }
         } catch (HibernateException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public List<User> findAll() {
+    public void deleteById(Long id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+           User user = searchById(id);
+           if(user!=null){
+               session.beginTransaction();
+               session.delete(user);
+               session.getTransaction().commit();
+           } else{
+               System.out.println("Employee doesn't exist with provided Id..");
+           }
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<User> searchAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from User ", User.class).list();
         }
@@ -77,6 +77,40 @@ public class UserDao implements DAO<User, Long> {
             session.beginTransaction();
             session.createQuery("delete from User").executeUpdate();
             session.getTransaction().commit();
+        }
+    }
+
+    public List<User> searchByFirstName(String firstName, String lastName){
+        List<User> users = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM User U where U.firstName = :firstName and U.lastName = :lastName";
+            Query query = session.createQuery(hql);
+            query.setParameter("firstName", firstName);
+            query.setParameter("lastName", lastName);
+            users = query.getResultList();
+            if(users!=null && !users.isEmpty()){
+                return users;
+            } else{
+                System.err.println("There are no users with the first name " + firstName
+                        + " and the last name " + lastName);
+            }
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void deleteByFirstName(String firstName) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            String hql = "delete from User U where U.firstName = :firstName";
+            Query query = session.createQuery(hql);
+            query.setParameter("firstName", firstName);
+            int result = query.executeUpdate();
+            System.out.println("Rows affected: " + result);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
     }
 }
